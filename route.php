@@ -14,6 +14,9 @@ switch($route->getParameter(1)){
     case "review":
         include('api/review.php');
         break;
+    case "tag":
+        include('api/tag.php');
+        break;
     default:
         include('api/default.php'); 
         break;

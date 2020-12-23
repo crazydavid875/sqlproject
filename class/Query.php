@@ -84,7 +84,7 @@ class Query{
         
         return $response;
     }
-    //TODO: ADD DELETE PATCH
+    
     public function Delete($table,$where){
         $sql = $this->sql;
         $response['code'] = 200;
