@@ -1,6 +1,6 @@
 <?php
 	$table = "review"
-
+		
 	switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
 		$result = Select($route->getParameter(2));
