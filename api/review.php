@@ -22,7 +22,7 @@
 		echo json_encode($result['value']);
 		break;
 	case 'DELETE':
-	$id = $route->getParameter(2);
+		$id = $route->getParameter(2);
 		if($id != '') {
 			$result = Delete($id);
 			http_response_code($result['code']);
