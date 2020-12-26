@@ -1,7 +1,7 @@
 <?php
 
 
-$table = "tag";
+$table = "wishlist";
 
 
 if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
@@ -51,11 +51,16 @@ function Select($id){
     $index = 0;
     $where = '1';
     if($id!=''){
-        $where = "id = ".$id;
+        $where = "$table.id = ".$id;
     }
+    $showData = "$table.id,gameid,game.name,game.price,game.picture
+    ,game.description,game.tagid,tag.name as tag,saveDatetime";
+    $query = "SELECT   $showData
+    FROM wishlist 
+    LEFT JOIN game ON game.Id=wishlist.gameid 
+    LEFT JOIN tag ON game.tagId = tag.id WHERE $where ";
     
-    $result = $sql->query("SELECT  * 
-    FROM $table  WHERE $where ");
+    $result = $sql->query($query);
     
     if(!$result) {
         $response['value'] = $sql->error;

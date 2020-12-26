@@ -1,12 +1,14 @@
 <?php
 
-
-$table = "tag";
+$table = "member";
 
 
 if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
-    $result = Select($route->getParameter(2));
     
+    if($route->getParameter(2)=='login')
+        $result = Login();
+    else
+        $result = Select($route->getParameter(2));
     http_response_code($result['code']);
 
     echo json_encode($result['value']);
@@ -24,7 +26,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
     $id = $route->getParameter(2);
     $result = Update($_PATCH,$id);
 
-    
+    $error = $query->ErrorMsg();
     http_response_code($result['code']);
     echo json_encode($result['value']);
 }
@@ -54,7 +56,7 @@ function Select($id){
         $where = "id = ".$id;
     }
     
-    $result = $sql->query("SELECT  * 
+    $result = $sql->query("SELECT *  
     FROM $table  WHERE $where ");
     
     if(!$result) {
@@ -64,6 +66,41 @@ function Select($id){
     }
     $response['value'] = [];
     while($row = $result->fetch_assoc()){
+        $response['value'][$index] = $row;
+        $index++;
+    }
+    
+    if($index == 0){
+        $response['code']=404;
+        $response['value'] = "game not found";
+    }
+    
+    return $response;
+}
+function Login(){
+    global $sql;
+    global $table;
+    $response['code'] = 200;
+    $response['value'] = '';
+    $index = 0;
+    if(!isset($_SERVER['PHP_AUTH_USER'])||!isset($_SERVER['PHP_AUTH_PW'])){
+        $response['code'] = 400;
+        $response['value'] = "please enter account and pwd";
+    }
+    $where ="account = ".$_SERVER['PHP_AUTH_USER'].
+            "password = ".$_SERVER['PHP_AUTH_PW'];
+    
+    
+    $result = $sql->query("SELECT *  
+    FROM $table  WHERE $where ");
+    
+    if(!$result) {
+        $response['value'] = $sql->error;
+        $response['code']=400;
+        return $response;
+    }
+    $response['value'] = [];
+    if($row = $result->fetch_assoc()){
         $response['value'][$index] = $row;
         $index++;
     }
