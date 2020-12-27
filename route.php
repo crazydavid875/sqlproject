@@ -23,6 +23,9 @@ switch($route->getParameter(1)){
     case "wishlist":
         include('api/wishlist.php');
         break;
+    case "shoppinglist":
+        include('api/shoppinglist.php');
+        break;
     default:
         include('api/default.php'); 
         break;
