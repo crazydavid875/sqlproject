@@ -23,7 +23,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
     $id = $route->getParameter(2);
     $result = Update($_PATCH,$id);
 
-    $error = $query->ErrorMsg();
+
     http_response_code($result['code']);
     echo json_encode($result['value']);
 }
@@ -53,7 +53,7 @@ function Select($reply_id){
         $where = "reply.id = ".$reply_id;
     }
     
-    $result = $sql->query("SELECT reply.id,reviewId,context,datetime 
+    $result = $sql->query("SELECT reply.id,reviewId,reply.context,reply.datetime 
     FROM $table JOIN review ON reply.reviewId=review.id WHERE $where ");
     
     if(!$result) {
@@ -69,7 +69,7 @@ function Select($reply_id){
     
     if($index == 0){
         $response['code']=404;
-        $response['value'] = "reply" not found";
+        $response['value'] = "reply not found";
     }
     
     return $response;
@@ -105,7 +105,7 @@ function Update($data,$id){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
     $str =  implode(",",$squence);
-    $query = "UPDATE $table SET $str where id=$id ";
+    echo $query = "UPDATE $table SET $str where id=$id ";
 
     $result = $sql->query($query);
     if(!$result) {

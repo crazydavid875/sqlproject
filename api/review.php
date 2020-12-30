@@ -17,7 +17,6 @@
 		$id = $route->getParameter(2);
 		$data = (array)json_decode(trim(file_get_contents('php://input'),"[]"));
 		$result = Update($id, $data);
-		$error = $query->ErrorMsg();
 		http_response_code($result['code']);
 		echo json_encode($result['value']);
 		break;
