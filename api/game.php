@@ -23,7 +23,6 @@ else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
     $id = $route->getParameter(2);
     $result = Update($_PATCH,$id);
 
-    $error = $query->ErrorMsg();
     http_response_code($result['code']);
     echo json_encode($result['value']);
 }
