@@ -1,5 +1,5 @@
 <?php
-	$table = "review"
+	$table = "review";
 		
 	switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
@@ -45,7 +45,7 @@
 		$response['value'] = [];
 
 		$query_select = "select * from $table ";
-		$query_where = "where ".($id=='')?"1":"id=$id";
+		$query_where = "where ".(($id=='')?"1":"id=$id");
 		$query = $query_select.$query_where;
 
 		$result = $sql->query($query);
@@ -59,12 +59,12 @@
 			$index++;
 		}
 		if($index == 0) {
-			response['code'] = 404;
-			response['value'] = "Review Not Found";
+			$response['code'] = 404;
+			$response['value'] = "Review Not Found";
 		}
 		else
-			response['code'] = 200;
-		return response;
+			$response['code'] = 200;
+		return $response;
 	}
 
 	function Insert($data) {
@@ -76,8 +76,8 @@
 		$keys = array_keys($data);
 		$query_insert = "insert into $table ";
 		$query_keys = "(".implode(",",$keys).")\n";
-		$query_values = "values(".sprintf("'%s'",implode(",",$data)).")";
-		$query = $query_insert.$query_keys.$query_values;
+		$query_values = "values(".sprintf("'%s'",implode("','",$data)).")";
+		echo $query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);
 		if(!$result) {
@@ -100,7 +100,7 @@
 		$sets = [];
 		for($i = 0; $i < count($keys); $i++)
 			$sets[$i] = sprintf("%s = '%s'", $keys[$i], $data[$keys[$i]]);
-		$query_update = "update $table "
+		$query_update = "update $table ";
 		$query_set = "set ".implode(",", $sets);
 		$query_where = "where id=$id";
 		$query = $query_update.$query_set.$query_where;
@@ -114,7 +114,7 @@
 		$response['code'] = 200;
 		if($sql->affected_rows == 0)
 			$response['value'] = "Nothing Changes";
-		return response;
+		return $response;
 	}
 
 	function Delete($id) {
@@ -124,7 +124,7 @@
 		$response['value'] = '';
 		
 		$query_delete = "delete from $table ";
-		$query_where = "id=$id";
+		$query_where = "WHERE id=$id";
 		$query = $query_delete.$query_where;
 
 		$result = $sql->query($query);
