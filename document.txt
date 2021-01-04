@@ -106,8 +106,7 @@ shoppinglist
             ]
 todo:
     	商品追蹤搜尋推薦管理子系統
-    cupon
-        shoppinglist 要存取使用了哪張優惠券
+    cupon shoppinglist 要存取使用了哪張優惠券
     game picture 上傳/下載
     member 自動輸入memberid address
     shoppinfliststate
