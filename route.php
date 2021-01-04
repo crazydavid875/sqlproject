@@ -6,7 +6,8 @@ $route->getParameter(1); // 從 http://127.0.0.1/game/aaa/bbb 取得 aaa 字串�
 // 用參數決定載入某頁並讀取需要的資料
 switch($route->getParameter(1)){
     case "game":
-        include('api/game.php');
+        if($route->getParameter(2) == "search")include('api/gamesearch.php');
+        else   include('api/game.php');
         break;
     case "reply":
         include('api/reply.php');

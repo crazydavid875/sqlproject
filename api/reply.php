@@ -79,11 +79,11 @@ function Insert($data){
     global $table;
     $response['code'] = 200;
     $response['value'] = '';
-    
+    $now =  date("Y-m-d H:i:s");
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
-    $query = "INSERT INTO $table ($keystr) VALUES($valstr)";
+    $query = "INSERT INTO $table ($keystr,datetime) VALUES($valstr,'$now')";
     
     $result = $sql->query($query);
     if(!$result) {

@@ -131,13 +131,13 @@ function InsertCart($data){
     global $table;
     $response['code'] = 200;
     $response['value'] = '';
-    
+    $now =  date("Y-m-d H:i:s");
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));   
     $result = $sql->query("SELECT * FROM shoppinglist where stateid = 0");
     if($result->num_rows<=0){
-        $query = "INSERT INTO shoppinglist (stateid) VALUES('0')";
+        $query = "INSERT INTO shoppinglist (stateid,buyDatetime) VALUES(0,'$now')";
         $result = $sql->query($query);
         if(!$result) {
             $response['value'] = $sql->error;
@@ -169,6 +169,7 @@ function UpdateCart($data,$id){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
     $str =  implode(",",$squence);
+    
     $query = "UPDATE havelist SET $str where id=$id ";
 
     $result = $sql->query($query);
@@ -217,10 +218,8 @@ function Select($id){
         $where = "$table.id = ".$id;
     }
     $showData = "*";
-    $query = "SELECT   $showData
-    FROM shoppinglist 
-    LEFT JOIN game ON game.Id=wishlist.gameid 
-    LEFT JOIN tag ON game.tagId = tag.id WHERE $where ";
+    $query = "SELECT  $showData
+    FROM shoppinglist  WHERE $where ";
     
     $result = $sql->query($query);
     
@@ -237,7 +236,7 @@ function Select($id){
     
     if($index == 0){
         $response['code']=404;
-        $response['value'] = "game not found";
+        $response['value'] = "list not found";
     }
     
     return $response;
@@ -251,7 +250,13 @@ function Insert($data){
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
+    $now =  date("Y-m-d H:i:s");
+    if(isset($data['stateid'])&&$data['stateid']==1){
+        $keystr.= ",buyDatetime";
+        $valstr.= "'$now'";
+    }
     $query = "INSERT INTO $table ($keystr) VALUES($valstr)";
+    
     
     $result = $sql->query($query);
     if(!$result) {
@@ -268,11 +273,15 @@ function Update($data,$id){
     $response['code'] = 200;
     $response['value'] = '';
     $keys = array_keys($data);
+    $now =  date("Y-m-d H:i:s");
     $squence = [];
     for($i = 0;$i<count($keys);$i++){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
     $str =  implode(",",$squence);
+    if(isset($data['stateid'])&&$data['stateid']==1){
+        $str.="datetime='$now'";
+    }
     $query = "UPDATE $table SET $str where id=$id ";
 
     $result = $sql->query($query);

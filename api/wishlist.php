@@ -89,7 +89,8 @@ function Insert($data){
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
-    $query = "INSERT INTO $table ($keystr) VALUES($valstr)";
+    $now =  date("Y-m-d H:i:s");
+    $query = "INSERT INTO $table ($keystr,saveDatetime) VALUES($valstr,$now)";
     
     $result = $sql->query($query);
     if(!$result) {
@@ -107,10 +108,11 @@ function Update($data,$id){
     $response['value'] = '';
     $keys = array_keys($data);
     $squence = [];
+    $now =  date("Y-m-d H:i:s");
     for($i = 0;$i<count($keys);$i++){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
-    $str =  implode(",",$squence);
+    $str =  implode(",",$squence).",datetime='$now'";
     $query = "UPDATE $table SET $str where id=$id ";
 
     $result = $sql->query($query);

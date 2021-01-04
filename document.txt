@@ -1,0 +1,111 @@
+game
+    - select
+        ./game
+        ./game/{id}
+        response: 
+            [{
+                "id":"1",
+                "name":"abc",
+                "soldOutNumber":"123",
+                "price":"12",
+                "picture":"aws",
+                "description":"wew",
+                "tag":"action"
+            }]
+    - insert
+        ./game
+        response:
+            {insert_id}
+    - update
+        ./game/{id}
+    - delete
+        ./game/{id}
+review
+    - select
+        ./review
+        ./review/{id}
+        response: 
+        [
+            {
+                "id": "2",
+                "gameId": "1",
+                "memberId": "1",
+                "star": "0",
+                "context": "wwww",
+                "datetime": "0000-00-00 00:00:00"
+            }
+        ]
+    - insert
+        ./review
+        response:
+            {insert_id}
+    - update
+        ./review/{id}
+    - delete
+        ./review/{id}
+reply
+
+tag
+
+wishlist
+
+shoppinfliststate
+
+shoppinglist/cart
+- select
+        ./shoppinglist/cart
+        
+        ./shoppinglist/cart/{id}
+        response: 
+            [
+                {
+                    "id": "1",
+                    "gameid": "1",
+                    "name": "abc",
+                    "price": "123",
+                    "quantity": "1"
+                },
+                {
+                    "id": "2",
+                    "gameid": "2",
+                    "name": "12",
+                    "price": "111",
+                    "quantity": "3"
+                }
+            ]
+    - insert
+        ./shoppinglist/cart
+        ex:
+            [
+                {
+                "quantity":3,"gameId":2
+                }
+            ]
+        response:
+            {insert_id}
+    - update
+        ./shoppinglist/cart/{id}
+    - delete
+        ./shoppinglist/cart/{id}
+shoppinglist
+- select
+        ./shoppinglist
+        
+        ./shoppinglist/{id}
+        response: 
+            [
+                {
+                    "id": "3",
+                    "stateId": "0",
+                    "address": null,
+                    "buyDatetime": "2021-01-04 08:38:12",
+                    "memberId": null
+                }
+            ]
+todo:
+    	商品追蹤搜尋推薦管理子系統
+    cupon
+        shoppinglist 要存取使用了哪張優惠券
+    game picture 上傳/下載
+    member 自動輸入memberid address
+    shoppinfliststate

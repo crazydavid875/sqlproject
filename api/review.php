@@ -71,12 +71,12 @@
 		global $table;
 		$response['code'] = null;
 		$response['value'] = '';
-		
+		$now =  date("Y-m-d H:i:s");
 		$keys = array_keys($data);
 		$query_insert = "insert into $table ";
-		$query_keys = "(".implode(",",$keys).")\n";
-		$query_values = "values(".sprintf("'%s'",implode("','",$data)).")";
-		echo $query = $query_insert.$query_keys.$query_values;
+		$query_keys = "(".implode(",",$keys).",datetime)\n";
+		$query_values = "values(".sprintf("'%s'",implode("','",$data)).",'$now')";
+		$query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);
 		if(!$result) {
@@ -86,6 +86,7 @@
 		}
 		$response['code'] = 200;
 		$response['value'] = $sql->insert_id;
+		
 		return $response;
 	}
 
