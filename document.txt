@@ -1,3 +1,5 @@
+1.先clone到一個空資料夾
+2.將sqlproject放到\xampp\htdocs\
 game
     - select
         ./game
