@@ -104,9 +104,20 @@ shoppinglist
                     "memberId": null
                 }
             ]
+./member/login
+    [{
+        email:
+        uid:
+    }]
+    response:
+        [{
+            id
+            ismanager
+        }]
 todo:
-    	商品追蹤搜尋推薦管理子系統
     cupon shoppinglist 要存取使用了哪張優惠券
-    game picture 上傳/下載
-    member 自動輸入memberid address
-    shoppinfliststate
+
+    member 自動輸入memberid address  (username:uid，password:token)
+    (結帳、登入、購物車、優惠券、評論、願望清單)
+    
+    picture game 更多圖片

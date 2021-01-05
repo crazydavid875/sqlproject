@@ -52,8 +52,12 @@ function Select($game_id){
         $where = "game.id = ".$game_id;
     }
     
-    $result = $sql->query("SELECT game.id,game.name,soldOutNumber,price,picture,description,tag.name as tag 
-    FROM $table JOIN tag ON game.tagId=tag.id WHERE $where ");
+    $result = $sql->query("SELECT game.id,game.name,price,picture,description,tag.name as tag,
+    sum(havelist.quantity) as soldOutNumber 
+    FROM $table 
+    JOIN tag ON game.tagId=tag.id 
+    join havelist on havelist.gameid=game.id 
+    WHERE $where");
     
     if(!$result) {
         $response['value'] = $sql->error;
