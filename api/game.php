@@ -63,10 +63,12 @@ function Select($game_id){
         WHERE havelist.gameid ='$game_id' and shoppinglist.memberid = '$authmemberid' and shoppingliststate.name='訂單完成' ) ) as hasGame";
     }
     $query = "SELECT game.id,game.name,price,picture,description,tag.name as tag,
-    COALESCE(sum(havelist.quantity),0)  as soldOutNumber $hasGame
+    COALESCE(sum(havelist.quantity),0)  as soldOutNumber $hasGame,
+    COALESCE(TRUNCATE(avg(review.star),1),0)  as star
     FROM $table   
     JOIN tag ON game.tagId=tag.id 
     LEFT OUTER join havelist on havelist.gameid=game.id
+    left OUTER join review on review.gameid = game.id 
     WHERE $where 
     group by game.id";
     

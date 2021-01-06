@@ -13,11 +13,10 @@ switch($route->getParameter(1)){
         else   include('api/game.php');
         break;
     case "reply":
-        if(!$isauth)break;
+        if(!isNotAllow($isauth))break;
         include('api/reply.php');
         break;
     case "review":
-        
         include('api/review.php');
         break;
     case "tag":
@@ -27,11 +26,11 @@ switch($route->getParameter(1)){
         include('api/member.php');
         break;
     case "wishlist":
-        if(!$isauth)break;
+        if(!isNotAllow($isauth))break;
         include('api/wishlist.php');
         break;
     case "shoppinglist":
-        if(!$isauth)break;
+        if(!isNotAllow($isauth))break;
         include('api/shoppinglist.php');
         break;
     case "shoppingliststate":
@@ -41,6 +40,13 @@ switch($route->getParameter(1)){
     default:
         include('api/default.php'); 
         break;
+}
+function isNotAllow($allow){
+    if(!$allow){
+        http_response_code(400);
+        echo "AUTH NOT ALLOW";
+    }
+    return $allow;
 }
 function CheckAuth(){
     global $testMode;
@@ -58,8 +64,6 @@ function CheckAuth(){
     FROM member  WHERE $where ");
     
     if(!$result) {
-        http_response_code(400);
-        echo "AUTH NOT ALLOW";
         return false;
     }
     $response['value'] = [];
@@ -70,8 +74,6 @@ function CheckAuth(){
     }
 
     if($index == 0) {
-        http_response_code(400);
-        echo "AUTH NOT ALLOW";
         return false;
     }
     return true;
