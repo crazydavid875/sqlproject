@@ -86,7 +86,7 @@ function Login($data){
 
     $where =" account = '".$data['uid']."'";
 
-    echo $query = "SELECT id,isManager  
+    $query = "SELECT id,isManager  
     FROM $table  WHERE $where ";
     $result = $sql->query($query);
     
@@ -105,8 +105,9 @@ function Login($data){
 
     if($index == 0){
         $uid = $data["uid"];
-        $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
+        echo $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
         $result = $sql->query($query);
+        echo $sql->error;
         $response['value'][0]['id'] = $sql->insert_id;
         $response['value'][0]['isManager'] = false;
     }
