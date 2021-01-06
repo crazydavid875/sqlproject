@@ -4,7 +4,7 @@ $authmemberid  = -1;
 $isManager = false;
 $route = new Router(Request::uri()); //搭配 .htaccess 排除資料夾名稱後解析 URL
 $route->getParameter(1); // 從 http://127.0.0.1/game/aaa/bbb 取得 aaa 字串之意
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://127.0.0.1:8080/, http://localhost:8080/");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Max-Age: 1000");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Cache-Control, Pragma, Authorization, Accept, Accept-Encoding");
