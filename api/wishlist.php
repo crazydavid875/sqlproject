@@ -46,10 +46,12 @@ else if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
 function Select($id){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    $where = '1';
+    $where = "memberid ='$authmemberid'";
     if($id!=''){
         $where = "$table.id = ".$id;
     }
@@ -81,6 +83,8 @@ function Select($id){
     return $response;
 }
 function Insert($data){
+    global $authmemberid;
+    global $isManager;
     global $sql;
     global $table;
     $response['code'] = 200;
@@ -90,7 +94,7 @@ function Insert($data){
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
     $now =  date("Y-m-d H:i:s");
-    $query = "INSERT INTO $table ($keystr,saveDatetime) VALUES($valstr,$now)";
+    $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,$now,'$authmemberid')";
     
     $result = $sql->query($query);
     if(!$result) {

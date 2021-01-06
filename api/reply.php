@@ -75,8 +75,11 @@ function Select($reply_id){
     return $response;
 }
 function Insert($data){
+    
+    global $isManager;
     global $sql;
     global $table;
+
     $response['code'] = 200;
     $response['value'] = '';
     $now =  date("Y-m-d H:i:s");

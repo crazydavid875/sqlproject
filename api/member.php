@@ -83,8 +83,8 @@ function Login($data){
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    
-    $where =" email = '".$data['email']."'";
+
+    $where =" account = '".$data['uid']."'";
 
     
     $result = $sql->query("SELECT id,isManager  
@@ -97,22 +97,15 @@ function Login($data){
     }
     $response['value'] = [];
     if($row = $result->fetch_assoc()){
-        if($row["account"]==$data["uid"]){
-
-        }
-        else
-        {
-            $response['value'] = "uid error";
-            $response['code']=410;
-            return $response;
-        }
+        
+        $response['value'] = $row;
+        $response['code']=200;
         $index++;
     }
 
     if($index == 0){
         $uid = $data["uid"];
-        $email = $data["email"];
-        $query = "INSERT INTO $table (account,email,ismanager) VALUES('$uid','$email',0)";
+        $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
         $result = $sql->query($query);
         $response['value'][0]['id'] = $sql->insert_id;
         $response['value'][0]['isManager'] = false;

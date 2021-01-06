@@ -44,20 +44,33 @@ else if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
 function Select($game_id){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
+
     $where = '1';
     if($game_id!=''){
         $where = "game.id = ".$game_id;
     }
-    
-    $result = $sql->query("SELECT game.id,game.name,price,picture,description,tag.name as tag,
-    sum(havelist.quantity) as soldOutNumber 
-    FROM $table 
+    $hasGame = "";
+    if(!$isManager){
+        $hasGame = ", (SELECT EXISTS(SELECT havelist.gameid 
+        FROM havelist   
+        join shoppinglist on shoppinglist.id=havelist.shoppinglistid
+        join shoppingliststate on shoppingliststate.id = shoppinglist.stateid
+        WHERE havelist.gameid ='$game_id' and shoppinglist.memberid = '$authmemberid' and shoppingliststate.name='訂單完成' ) ) as hasGame";
+    }
+    $query = "SELECT game.id,game.name,price,picture,description,tag.name as tag,
+    COALESCE(sum(havelist.quantity),0)  as soldOutNumber $hasGame
+    FROM $table   
     JOIN tag ON game.tagId=tag.id 
-    join havelist on havelist.gameid=game.id 
-    WHERE $where");
+    LEFT OUTER join havelist on havelist.gameid=game.id
+    WHERE $where 
+    group by game.id";
+    
+    $result = $sql->query($query);
     
     if(!$result) {
         $response['value'] = $sql->error;
@@ -82,10 +95,23 @@ function Insert($data){
     global $table;
     $response['code'] = 200;
     $response['value'] = '';
-    
+    if(isset($data["tag"])){
+        $tag =  $data['tag']; 
+        $query = "INSERT INTO tag (name)
+        SELECT '$tag'    
+        WHERE NOT EXISTS(SELECT name
+        FROM tag tg
+        WHERE tg.name = '$tag')";
+        $result = $sql->query($query);
+        $queryselect = "SELECT id from tag where name='$tag'";
+        $result = $sql->query($queryselect);
+        $row= $result->fetch_assoc();
+        $data["tag"] = $row["id"];
+        $data = replace_key($data, "tag", "tagid");
+    }
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
-    $valstr =  sprintf("'%s'",implode("','",$data));        
+    $valstr =  sprintf("'%s'",implode("','",$data));      
     $query = "INSERT INTO $table ($keystr) VALUES($valstr)";
     
     $result = $sql->query($query);
@@ -97,11 +123,33 @@ function Insert($data){
     $response['value'] = $sql->insert_id;
     return $response;
 }
+function replace_key($array, $old_key, $new_key) {
+    $keys = array_keys($array);
+    if (false === $index = array_search($old_key, $keys)) {
+        throw new Exception(sprintf('Key "%s" does not exit', $old_key));
+    }
+    $keys[$index] = $new_key;
+    return array_combine($keys, array_values($array));
+}
 function Update($data,$id){
     global $sql;
     global $table;
     $response['code'] = 200;
     $response['value'] = '';
+    if(isset($data["tag"])){
+        $tag =  $data['tag']; 
+        $query = "INSERT INTO tag (name)
+        SELECT '$tag'    
+        WHERE NOT EXISTS(SELECT name
+        FROM tag tg
+        WHERE tg.name = '$tag')";
+        $result = $sql->query($query);
+        $queryselect = "SELECT id from tag where name='$tag'";
+        $result = $sql->query($queryselect);
+        $row= $result->fetch_assoc();
+        $data["tag"] = $row["id"];
+        $data = replace_key($data, "tag", "tagid");
+    }
     $keys = array_keys($data);
     $squence = [];
     for($i = 0;$i<count($keys);$i++){
