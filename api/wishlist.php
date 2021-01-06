@@ -94,7 +94,7 @@ function Insert($data){
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
     $now =  date("Y-m-d H:i:s");
-    $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,$now,'$authmemberid')";
+ $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,'$now','$authmemberid')";
     
     $result = $sql->query($query);
     if(!$result) {

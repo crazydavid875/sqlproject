@@ -219,7 +219,7 @@ function Select($id){
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    $where = '1';
+    $where = 'stateid <>0';
     if(!$isManager){
         $response['value'] = "you dont have permission";
         $response['code']=433;
@@ -229,7 +229,7 @@ function Select($id){
     }
     $showData = "*";
     $query = "SELECT  $showData
-    FROM shoppinglist  WHERE $where ";
+    FROM shoppinglist  WHERE $where  ";
     
     $result = $sql->query($query);
     

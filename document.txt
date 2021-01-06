@@ -157,7 +157,53 @@ reply
 tag
 
 wishlist
-
+    - select
+        response:
+        [
+            {
+                "id": "1",
+                "gameid": "1",
+                "name": "Gris",
+                "price": "310",
+                "picture": "https://cdn.cloudflare.steamstatic.com/steam/apps/683320/header.jpg?t=1574359986",
+                "description": "Gris是一個充滿希望的小姑娘，她由於生活中痛苦的經歷而迷失在自己的世界裡。",
+                "tagid": "1",
+                "tag": "action",
+                "saveDatetime": "2021-01-06 07:07:28"
+            },
+            {
+                "id": "2",
+                "gameid": "1",
+                "name": "Gris",
+                "price": "310",
+                "picture": "https://cdn.cloudflare.steamstatic.com/steam/apps/683320/header.jpg?t=1574359986",
+                "description": "Gris是一個充滿希望的小姑娘，她由於生活中痛苦的經歷而迷失在自己的世界裡。",
+                "tagid": "1",
+                "tag": "action",
+                "saveDatetime": "2021-01-06 07:07:40"
+            }
+        ]
+    - insert
+        require
+        [
+            {
+                "gameid":1
+            }
+        ]
+        respone 
+            {gameid}
+            ex:
+            4  -  表示wishlist.id = 4
+    -update
+        ./wisthlist/{wishlist_id}    //ex:./wisthlist/1 -> wishlist_id=1
+        require
+            [
+                {
+                    "gameid":1
+                }
+            ]
+    -delete
+        ./wisthlist/{wishlist_id}    //ex:./wisthlist/1 -> wishlist_id=1
 shoppinfliststate
 
 shoppinglist/cart
@@ -197,9 +243,8 @@ shoppinglist/cart
     - delete
         ./shoppinglist/cart/{id}
 shoppinglist
-- select
+    - select
         ./shoppinglist
-        
         ./shoppinglist/{id}
         response: 
             [
@@ -211,16 +256,24 @@ shoppinglist
                     "memberId": null
                 }
             ]
-./member/login
-    [{
-        email:
-        uid:
-    }]
-    response:
-        [{
-            id
-            ismanager
-        }]
+    - update
+        ./shoppinglist/{id}
+            [{
+                stateid:3 //(完成訂單)
+            }]
+    - delete
+        ./shoppinglist/{id}
+member
+    -post
+        ./member/login
+            [{
+                uid:
+            }]
+            response:
+                [{
+                    id
+                    ismanager
+                }]
 todo:
     cupon shoppinglist 要存取使用了哪張優惠券
 
