@@ -105,9 +105,9 @@ function Login($data){
 
     if($index == 0){
         $uid = $data["uid"];
-        echo $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
+         $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
         $result = $sql->query($query);
-        echo $sql->error;
+         $sql->error;
         $response['value'][0]['id'] = $sql->insert_id;
         $response['value'][0]['isManager'] = false;
     }
