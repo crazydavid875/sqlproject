@@ -60,7 +60,8 @@ function Select($game_id){
         FROM havelist   
         join shoppinglist on shoppinglist.id=havelist.shoppinglistid
         join shoppingliststate on shoppingliststate.id = shoppinglist.stateid
-        WHERE havelist.gameid ='$game_id' and shoppinglist.memberid = '$authmemberid' and shoppingliststate.name='訂單完成' ) ) as hasGame";
+        WHERE havelist.gameid ='$game_id' and shoppinglist.memberid = '$authmemberid' 
+        and shoppingliststate.name='訂單完成' ) ) as hasGame";
     }
     $query = "SELECT game.id,game.name,price,picture,description,tag.name as tag,
     COALESCE(sum(havelist.quantity),0)  as soldOutNumber $hasGame,
