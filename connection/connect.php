@@ -2,8 +2,8 @@
 
 $conn_IP = "localhost";
 $conn_userName = "root";
-$conn_passwd = "1234";
-$conn_db = "gameshop";
+$conn_passwd = "";
+$conn_db = "myProj";
 
 $sql = new mysqli($conn_IP,$conn_userName,$conn_passwd,$conn_db);
 if (mysqli_connect_errno()) {

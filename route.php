@@ -54,6 +54,7 @@ function CheckAuth(){
     global $authmemberid;
     global $isManager;
     $index = 0;
+
     if(!isset($_SERVER['HTTP_UID'])) {
         return false;
     }

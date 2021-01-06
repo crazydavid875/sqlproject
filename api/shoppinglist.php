@@ -15,6 +15,7 @@ if($route->getParameter(2)=="cart"){
         
     }
     else if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        
         $data = (array)json_decode(trim(file_get_contents('php://input'),"[]")) ;
         $result = InsertCart($data);
         http_response_code($result['code']);
