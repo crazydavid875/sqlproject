@@ -1,25 +1,74 @@
+
 1.先clone到一個空資料夾
 2.將sqlproject放到\xampp\htdocs\
 game
     - select
         ./game
-        ./game/{id}
         response: 
             [{
                 "id":"1",
                 "name":"abc",
-                "soldOutNumber":"123",
+                "soldOutNumber":0,
                 "price":"12",
                 "picture":"aws",
                 "description":"wew",
                 "tag":"action"
             }]
+        ./game/{id}
+        response: 
+            [{
+                "id":"1",
+                "name":"abc",
+                "soldOutNumber":0,
+                "price":"12",
+                "picture":"aws",
+                "description":"wew",
+                "tag":"action"
+            }]
+            if is not manager
+            [{
+                "id":"1",
+                "name":"abc",
+                "soldOutNumber":0,
+                "price":"12",
+                "picture":"aws",
+                "description":"wew",
+                "tag":"action"
+                "hasGame":0
+            }]
     - insert
         ./game
+        request:
+        {
+            name:
+            price:
+            picture:(url)
+            description:
+            tag:"action"
+        }
+        or
+        {
+            name:
+            price:
+            picture:(url)
+            description:
+            tagid:1
+        }
         response:
             {insert_id}
     - update
         ./game/{id}
+        request
+        [
+            {
+                "id": "2",
+                "name": "Hollow Knight",
+                "price": "111",
+                "picture": "https://cdn.cloudflare.steamstatic.com/steam/",
+                "description": "Forge your own path in Hollow Knight! An epic action adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.",
+                "tag": "abc"
+            }
+        ]
     - delete
         ./game/{id}
 review
@@ -37,8 +86,39 @@ review
                 "datetime": "0000-00-00 00:00:00"
             }
         ]
+        ./review/gameid/{gameid}
+            [
+                {
+                    "id": "4",
+                    "gameId": "16",
+                    "memberId": "1",
+                    "star": "3",
+                    "context": "aaa",
+                    "datetime": "2021-01-06 05:57:26",
+                    "replyid": "",
+                    "replycontext": "",
+                    "replydatetime": ""
+                },
+                {
+                    "id": "5",
+                    "gameId": "16",
+                    "memberId": "1",
+                    "star": "5",
+                    "context": "aaa",
+                    "datetime": "2021-01-06 05:57:46",
+                    "replyid": "",
+                    "replycontext": "",
+                    "replydatetime": ""
+                }
+            ]
     - insert
         ./review
+        request:
+        [{
+            "gameid":16,
+            "star":5,
+            "context":"aaa"
+        }]
         response:
             {insert_id}
     - update
@@ -46,7 +126,34 @@ review
     - delete
         ./review/{id}
 reply
-
+- select
+        ./reply
+        ./reply/{reply_id}
+        response: 
+        [
+            {
+                "id": "2",
+                "gameId": "1",
+                "memberId": "1",
+                "star": "0",
+                "context": "wwww",
+                "datetime": "0000-00-00 00:00:00"
+            }
+        ]
+    
+    - insert
+        ./reply
+        request:
+        [{
+            "gameid":16,
+            "context":"aaa"
+        }]
+        response:
+            {insert_id}
+    - update
+        ./reply/{id}
+    - delete
+        ./reply/{id}
 tag
 
 wishlist
@@ -104,9 +211,21 @@ shoppinglist
                     "memberId": null
                 }
             ]
+./member/login
+    [{
+        email:
+        uid:
+    }]
+    response:
+        [{
+            id
+            ismanager
+        }]
 todo:
-    	商品追蹤搜尋推薦管理子系統
     cupon shoppinglist 要存取使用了哪張優惠券
-    game picture 上傳/下載
-    member 自動輸入memberid address
-    shoppinfliststate
+
+    member 自動輸入memberid address  (username:uid，password:token)
+    (結帳、登入、購物車、優惠券、評論、願望清單)
+    
+    picture game 更多圖片
+    驗證使用者是否有買這款遊戲

@@ -92,10 +92,12 @@ else {
 function SelectCart($id){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    $where = 'shoppinglist.stateid=0';
+    $where = "shoppinglist.stateid=0 and memberid ='$authmemberid' ";
     if($id!=''){
         $where .= " AND havelist.id = $id  ";
     }
@@ -129,15 +131,17 @@ function SelectCart($id){
 function InsertCart($data){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     $now =  date("Y-m-d H:i:s");
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));   
-    $result = $sql->query("SELECT * FROM shoppinglist where stateid = 0");
+    $result = $sql->query("SELECT * FROM shoppinglist where stateid = 0 and memberid = '$authmemberid'");
     if($result->num_rows<=0){
-        $query = "INSERT INTO shoppinglist (stateid,buyDatetime) VALUES(0,'$now')";
+        $query = "INSERT INTO shoppinglist (stateid,buyDatetime,memberid) VALUES(0,'$now','$authmemberid')";
         $result = $sql->query($query);
         if(!$result) {
             $response['value'] = $sql->error;
@@ -210,10 +214,16 @@ function DeleteCart($where){
 function Select($id){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
     $where = '1';
+    if(!$isManager){
+        $response['value'] = "you dont have permission";
+        $response['code']=433;
+    }
     if($id!=''){
         $where = "$table.id = ".$id;
     }
@@ -244,6 +254,8 @@ function Select($id){
 function Insert($data){
     global $sql;
     global $table;
+    global $authmemberid;
+    global $isManager;
     $response['code'] = 200;
     $response['value'] = '';
     
@@ -255,7 +267,7 @@ function Insert($data){
         $keystr.= ",buyDatetime";
         $valstr.= "'$now'";
     }
-    $query = "INSERT INTO $table ($keystr) VALUES($valstr)";
+    $query = "INSERT INTO $table ($keystr,memberid) VALUES($valstr,'$authmemberid')";
     
     
     $result = $sql->query($query);

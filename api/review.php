@@ -3,7 +3,12 @@
 		
 	switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
-		$result = Select($route->getParameter(2));
+		if($route->getParameter(2)=='gameid'){
+			$result = SelectGame($route->getParameter(3));
+		}
+		else{
+			$result = Select($route->getParameter(2));
+		}
 		http_response_code($result['code']);
 		echo json_encode($result['value']);
 		break;
@@ -43,7 +48,7 @@
 		$response['code'] = null;
 		$response['value'] = [];
 
-		$query_select = "select * from $table ";
+		$query_select = "select * from $table   ";
 		$query_where = "where ".(($id=='')?"1":"id=$id");
 		$query = $query_select.$query_where;
 
@@ -65,17 +70,64 @@
 			$response['code'] = 200;
 		return $response;
 	}
+	function SelectGame($id) {
+		global $sql;
+		global $table;
+		$index = 0;
+		$response['code'] = null;
+		$response['value'] = [];
 
+		$query_select = "select tb.*,COALESCE(reply.id,'') as replyid,COALESCE(reply.context,'') as replycontext,
+		COALESCE(reply.datetime,'' ) as replydatetime 
+		from  game,$table tb left join reply on  tb.id = reply.reviewid   ";
+		$query_where = "where ".(($id=='')?"1":"game.id=$id " );
+		  $query = $query_select.$query_where;
+
+		$result = $sql->query($query);
+		if(!$result) {
+			$response['value'] = $sql->error;
+			$response['code'] = 400;
+			return $response;
+		}
+		while($row = $result->fetch_assoc()) {
+			$response['value'][$index] = $row;
+			$index++;
+		}
+		if($index == 0) {
+			$response['code'] = 404;
+			$response['value'] = "Review Not Found";
+		}
+		else
+			$response['code'] = 200;
+		return $response;
+	}
 	function Insert($data) {
 		global $sql;
 		global $table;
+		global $authmemberid;
+		global $isManager;
 		$response['code'] = null;
 		$response['value'] = '';
 		$now =  date("Y-m-d H:i:s");
 		$keys = array_keys($data);
+		$game_id = $data["gameid"];
+		$query = "SELECT havelist.gameid 
+        FROM havelist   
+        join shoppinglist on shoppinglist.id=havelist.shoppinglistid
+        join shoppingliststate on shoppingliststate.id = shoppinglist.stateid
+        WHERE havelist.gameid ='$game_id' and 
+		shoppinglist.memberid = '$authmemberid' and 
+		shoppingliststate.name='訂單完成' ";
+		$result = $sql->query($query);
+		if($result->num_rows<=0) {
+			$response['value'] = "you dont have game";
+			$response['code'] = 411;
+			return $response;
+		}
+
 		$query_insert = "insert into $table ";
-		$query_keys = "(".implode(",",$keys).",datetime)\n";
-		$query_values = "values(".sprintf("'%s'",implode("','",$data)).",'$now')";
+		$query_keys = "(".implode(",",$keys).",datetime,memberid)\n";
+		$query_values = "values(".sprintf("'%s'",implode("','",$data)).",'$now','$authmemberid')";
 		$query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);

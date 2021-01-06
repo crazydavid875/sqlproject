@@ -5,18 +5,18 @@ $table = "member";
 
 if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
     
-    if($route->getParameter(2)=='login')
-        $result = Login();
-    else
-        $result = Select($route->getParameter(2));
+    $result = Select($route->getParameter(2));
     http_response_code($result['code']);
-
     echo json_encode($result['value']);
     
 }
 else if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    
     $data = (array)json_decode(trim(file_get_contents('php://input'),"[]")) ;
-    $result = Insert($data);
+    if($route->getParameter(2)=='login'){
+        $result = Login($data);
+    }
+    else    $result = Insert($data);
     http_response_code($result['code']);
     echo json_encode($result['value']);
     
@@ -26,7 +26,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
     $id = $route->getParameter(2);
     $result = Update($_PATCH,$id);
 
-    $error = $query->ErrorMsg();
+
     http_response_code($result['code']);
     echo json_encode($result['value']);
 }
@@ -77,21 +77,17 @@ function Select($id){
     
     return $response;
 }
-function Login(){
+function Login($data){
     global $sql;
     global $table;
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    if(!isset($_SERVER['PHP_AUTH_USER'])||!isset($_SERVER['PHP_AUTH_PW'])){
-        $response['code'] = 400;
-        $response['value'] = "please enter account and pwd";
-    }
-    $where ="account = ".$_SERVER['PHP_AUTH_USER'].
-            "password = ".$_SERVER['PHP_AUTH_PW'];
+
+    $where =" account = '".$data['uid']."'";
+
     
-    
-    $result = $sql->query("SELECT *  
+    $result = $sql->query("SELECT id,isManager  
     FROM $table  WHERE $where ");
     
     if(!$result) {
@@ -101,13 +97,18 @@ function Login(){
     }
     $response['value'] = [];
     if($row = $result->fetch_assoc()){
-        $response['value'][$index] = $row;
+        
+        $response['value'] = $row;
+        $response['code']=200;
         $index++;
     }
-    
+
     if($index == 0){
-        $response['code']=404;
-        $response['value'] = "game not found";
+        $uid = $data["uid"];
+        $query = "INSERT INTO $table (account,ismanager) VALUES('$uid',0)";
+        $result = $sql->query($query);
+        $response['value'][0]['id'] = $sql->insert_id;
+        $response['value'][0]['isManager'] = false;
     }
     
     return $response;
