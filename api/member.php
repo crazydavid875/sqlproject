@@ -86,9 +86,9 @@ function Login($data){
 
     $where =" account = '".$data['uid']."'";
 
-    
-    $result = $sql->query("SELECT id,isManager  
-    FROM $table  WHERE $where ");
+    echo $query = "SELECT id,isManager  
+    FROM $table  WHERE $where ";
+    $result = $sql->query($query);
     
     if(!$result) {
         $response['value'] = $sql->error;

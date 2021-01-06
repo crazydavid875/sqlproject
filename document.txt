@@ -1,6 +1,8 @@
 
 1.先clone到一個空資料夾
 2.將sqlproject放到\xampp\htdocs\
+
+
 game
     - select
         ./game
@@ -270,15 +272,15 @@ member
                 uid:
             }]
             response:
-                [{
-                    id
-                    ismanager
-                }]
+            [{
+                id
+                ismanager
+            }]
 todo:
     cupon shoppinglist 要存取使用了哪張優惠券
 
-    member 自動輸入memberid address  (username:uid，password:token)
+    v member 自動輸入memberid address  (username:uid，password:token)
     (結帳、登入、購物車、優惠券、評論、願望清單)
     
-    picture game 更多圖片
-    驗證使用者是否有買這款遊戲
+    v picture game 更多圖片
+    v驗證使用者是否有買這款遊戲
