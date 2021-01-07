@@ -263,6 +263,10 @@ shoppinglist
             [{
                 stateid:3 //(完成訂單)
             }]
+        ./shoppinglist/finish
+            [{
+                "address":"st."
+            }]
     - delete
         ./shoppinglist/{id}
 member

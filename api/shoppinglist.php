@@ -50,8 +50,7 @@ if($route->getParameter(2)=="cart"){
 else {
     if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
         
-        $result = Select($route->getParameter(2));
-            
+        $result = Select($route->getParameter(2));            
         
         http_response_code($result['code']);
 
@@ -67,9 +66,14 @@ else {
     }
     else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
         $_PATCH =  (array)json_decode(trim(file_get_contents('php://input'),"[]")) ;
-        $id = $route->getParameter(2);
-        $result = Update($_PATCH,$id);
-
+        if($route->getParameter(2) == "finish"){
+        
+            $result = FinishList($_PATCH);
+        }
+        else{
+            $id = $route->getParameter(2);
+            $result = Update($_PATCH,$id);
+        }
         
         http_response_code($result['code']);
         echo json_encode($result['value']);
@@ -142,7 +146,7 @@ function InsertCart($data){
     $valstr =  sprintf("'%s'",implode("','",$data));   
     $result = $sql->query("SELECT * FROM shoppinglist where stateid = 0 and memberid = '$authmemberid'");
     if($result->num_rows<=0){
-        $query = "INSERT INTO shoppinglist (stateid,buyDatetime,memberid) VALUES(0,'$now','$authmemberid')";
+        echo $query = "INSERT INTO shoppinglist (stateid,buyDatetime,memberid) VALUES(0,'$now','$authmemberid')";
         $result = $sql->query($query);
         if(!$result) {
             $response['value'] = $sql->error;
@@ -328,6 +332,34 @@ function Delete($where){
         $response['value'] ="not thing change";
     }
     
+    
+    return $response;
+}
+function FinishList($data){
+    global $sql;
+    global $table;
+    $response['code'] = 200;
+    $response['value'] = '';
+    $keys = array_keys($data);
+    $now =  date("Y-m-d H:i:s");
+    $squence = [];
+    for($i = 0;$i<count($keys);$i++){
+        $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
+    }
+    $str =  implode(",",$squence);
+    $str.=",buydatetime='$now' , stateid='3'";
+    $query = "UPDATE $table SET $str where stateid=0 ";
+
+    $result = $sql->query($query);
+    if(!$result) {
+        $response['value'] = $sql->error;
+        $response['code'] = 400;
+        return $response;
+    }
+    if($sql->affected_rows==0){
+        $response['code'] = 200;
+        $response['value'] ="not thing change";
+    }
     
     return $response;
 }
