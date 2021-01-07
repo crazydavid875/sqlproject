@@ -276,6 +276,40 @@ member
                 id
                 ismanager
             }]
+
+coupon
+    -select
+	./coupon
+	response:
+		all coupon
+	./coupon/{id}
+	response:
+		target coupon
+    -insert
+	./coupon
+	request:
+	    {
+		period:(time)
+		context:(varchar)
+		discount:(float)
+	    }
+	response:
+	    insert_id
+    -delete
+	./coupon/{id}
+
+havecoupon
+    -select
+	./havecoupon
+	response:
+	    all coupon that current user have
+    -insert
+	./havecoupon/{couponid}/{memberid}
+	response:
+	    insert_id
+    -delete
+	./havecoupon/{id}
+	
 todo:
     cupon shoppinglist 要存取使用了哪張優惠券
 
