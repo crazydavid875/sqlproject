@@ -342,11 +342,14 @@ function FinishList($data){
     $keys = array_keys($data);
     $now =  date("Y-m-d H:i:s");
     $squence = [];
-    for($i = 0;$i<count($keys);$i++){
-        $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
+    $str = "";
+    if(count($keys)>0){
+        for($i = 0;$i<count($keys);$i++){
+            $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
+        }
+        $str =  implode(",",$squence).",";
     }
-    $str =  implode(",",$squence);
-    $str.=",buydatetime='$now' , stateid='3'";
+    $str.=" buydatetime='$now' , stateid='3'";
     $query = "UPDATE $table SET $str where stateid=0 ";
 
     $result = $sql->query($query);
