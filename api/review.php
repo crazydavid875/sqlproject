@@ -34,7 +34,7 @@
 		}
 		else {
 			http_response_code(400);
-			echo json_encode("Please Input a Id");
+			echo json_encode("Please Input an Id");
 		}
 		break;
 	default:

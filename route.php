@@ -41,6 +41,12 @@ switch($route->getParameter(1)){
 
         include('api/shoppingliststate.php');
         break;
+	case "coupon":
+		include('api/coupon.php');
+		break;
+	case "havecoupon":
+		include('api/havecoupon.php');
+		break;
     default:
         include('api/default.php'); 
         break;
