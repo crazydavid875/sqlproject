@@ -307,6 +307,9 @@ havecoupon
 	./havecoupon
 	response:
 	    all coupon that current user have
+	./havecoupon/{shoppinglistId}/{couponId}
+	response:
+	    total price
     -insert
 	./havecoupon/{couponid}/{memberid}
 	response:

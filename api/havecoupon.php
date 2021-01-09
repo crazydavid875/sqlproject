@@ -3,7 +3,13 @@
 
 	switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
-		$result = Select();
+		if($route->getParameter(2)=='')
+			$result = Select();
+		else {
+			$shoppinglistId = $route->getParameter(2);
+			$couponId = $route->getParameter(3);
+			$result = GetTotalPrice($shoppinglistId, $couponId);
+		}
 		http_response_code($result['code']);
 		echo json_encode($result['value']);
 		break;
@@ -48,6 +54,25 @@
 		}
 		if($index == 0)
 			$response['value'] = "You Have No Coupon";
+		$response['code'] = 200;
+		return $response;
+	}
+
+	function GetTotalPrice($shoppinglistId,$couponId) {
+		global $sql;
+		global $table;
+		$response['code'] = null;
+		$response['value'] = '';
+		
+		$query_select = "select sum(game.price) from havelist  "
+		$query_join_shoppinglist = "left join shoppinglist on shoppinglist.id = $shoppinglistId  "
+		$query_join_game = "left join game on gameId = game.id"
+		$query_join_coupon = "left join coupon on coupon.id = $couponId"
+		$query = $query_select.$query_join_shoppinglist.$query_join_game.$query_join_coupon;
+
+		$result = $sql->query($query);
+		$row = $result->fetch_assoc();
+		$response['value'] = $row;
 		$response['code'] = 200;
 		return $response;
 	}
