@@ -23,8 +23,8 @@ else if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 else if($_SERVER['REQUEST_METHOD'] === 'PATCH'){
     $_PATCH =  (array)json_decode(trim(file_get_contents('php://input'),"[]")) ;
-    $id = $route->getParameter(2);
-    $result = Update($_PATCH,$id);
+    
+    $result = Update($_PATCH);
 
 
     http_response_code($result['code']);
@@ -134,9 +134,10 @@ function Insert($data){
     $response['value'] = $sql->insert_id;
     return $response;
 }
-function Update($data,$id){
+function Update($data){
     global $sql;
     global $table;
+    global $authmemberid;
     $response['code'] = 200;
     $response['value'] = '';
     $keys = array_keys($data);
@@ -145,7 +146,7 @@ function Update($data,$id){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
     $str =  implode(",",$squence);
-    $query = "UPDATE $table SET $str where id=$id ";
+    $query = "UPDATE $table SET $str where id=$authmemberid ";
 
     $result = $sql->query($query);
     if(!$result) {
