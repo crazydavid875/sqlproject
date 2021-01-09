@@ -227,7 +227,7 @@ function Select($id){
     $where = 'stateid <>0';
     if(!$isManager){
         $response['value'] = "you dont have permission";
-        $response['code']=433;
+        $response['code']=410;
     }
     if($id!=''){
         $where = "$table.id = ".$id;
