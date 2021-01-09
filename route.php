@@ -38,8 +38,10 @@ switch($route->getParameter(1)){
         include('api/shoppinglist.php');
         break;
     case "shoppingliststate":
-
         include('api/shoppingliststate.php');
+        break;
+    case "search":
+        include('api/search.php');
         break;
 	case "coupon":
 		include('api/coupon.php');

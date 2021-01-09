@@ -3,7 +3,7 @@
 		
 	switch ($_SERVER['REQUEST_METHOD']) {
 	case 'GET':
-		$id = $route->getParameter(2)
+		$id = $route->getParameter(2);
 		$result = Select($id);
 		http_response_code($result['code']);
 		echo json_encode($result['value']);

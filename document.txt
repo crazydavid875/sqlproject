@@ -280,6 +280,16 @@ member
                 id
                 ismanager
             }]
+    -patch
+        ./member
+            [{
+                address:
+            }]
+            response:
+            [{
+                id
+                ismanager
+            }]
 
 coupon
     -select
@@ -316,7 +326,45 @@ havecoupon
 	    insert_id
     -delete
 	./havecoupon/{id}
-	
+search
+    -search hot (get)
+    ./search/hot/{how many} ex:./search/hot/5  (搜尋前5個，全部就不填)
+    -search recommend (get) 
+    ./search/recommend/{how many} ex:./search/recommend/5  (搜尋前5個)
+    -search starest (get) 搜尋star最高
+    ./search/starest/{how many} ex:./search/starest/5  (搜尋前5個，全部就不填)
+    -search(post)
+    ./search
+    request:
+    [{
+        name:'abc a b' (abc or a or b) 
+        //name:'abc+a+b c'(abc and a and b or c)
+        tag:[1,2,3] or [1]  (tag id) (array)
+    }]
+    response:
+    [
+    {
+        "id": "1",
+        "name": "Gris",
+        "price": "310",
+        "picture": "https://cdn.cloudflare.steamstatic.com/steam/apps/683320/header.jpg?t=1574359986",
+        "description": "Gris是一個充滿希望的小姑娘，她由於生活中痛苦的經歷而迷失在自己的世界裡。",
+        "tag": "模擬",
+        "soldOutNumber": "0",
+        "star": "0.0"
+    },
+    {
+        "id": "2",
+        "name": "Hollow Knight",
+        "price": "350",
+        "picture": "https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg?t=1601950406",
+        "description": "Forge your own path in Hollow Knight! An epic action adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.",
+        "tag": "action",
+        "soldOutNumber": "5",
+        "star": "0.0"
+    }
+    ]
+
 todo:
     cupon shoppinglist 要存取使用了哪張優惠券
 
