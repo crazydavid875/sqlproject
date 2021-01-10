@@ -220,21 +220,18 @@ function Select($id){
     global $sql;
     global $table;
     global $authmemberid;
-    global $isManager;
+    
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
     $where = 'stateid <>0';
-    if(!$isManager){
-        $response['value'] = "you dont have permission";
-        $response['code']=410;
-    }
+    
     if($id!=''){
         $where = "$table.id = ".$id;
     }
     $showData = "*";
     $query = "SELECT  $showData
-    FROM shoppinglist  WHERE $where  ";
+    FROM shoppinglist  WHERE $where and memberid ='$authmemberid'  ";
     
     $result = $sql->query($query);
     
