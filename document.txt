@@ -91,26 +91,17 @@ review
         ./review/gameid/{gameid}
             [
                 {
-                    "id": "4",
-                    "gameId": "16",
-                    "memberId": "1",
-                    "star": "3",
-                    "context": "aaa",
-                    "datetime": "2021-01-06 05:57:26",
+                    "id": "10",
+                    "gameId": "41",
+                    "memberId": "30",
+                    "star": "4",
+                    "context": "abdsdef",
+                    "datetime": "2021-01-10 14:26:50",
                     "replyid": "",
                     "replycontext": "",
-                    "replydatetime": ""
-                },
-                {
-                    "id": "5",
-                    "gameId": "16",
-                    "memberId": "1",
-                    "star": "5",
-                    "context": "aaa",
-                    "datetime": "2021-01-06 05:57:46",
-                    "replyid": "",
-                    "replycontext": "",
-                    "replydatetime": ""
+                    "replydatetime": "",
+                    "memberpicture": "",
+                    "membername": ""
                 }
             ]
     - insert
@@ -134,12 +125,12 @@ reply
         response: 
         [
             {
-                "id": "2",
-                "gameId": "1",
-                "memberId": "1",
-                "star": "0",
-                "context": "wwww",
-                "datetime": "0000-00-00 00:00:00"
+                "id": "7",
+                "reviewid": "10",
+                "context": "avefw",
+                "datetime": "2021-01-10 14:26:50",
+                "managername": "rtr",
+                "managerpicture": "wef"
             }
         ]
     

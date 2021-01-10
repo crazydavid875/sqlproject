@@ -78,8 +78,8 @@
 		$response['value'] = [];
 
 		$query_select = "select tb.*,COALESCE(reply.id,'') as replyid,COALESCE(reply.context,'') as replycontext,
-		COALESCE(reply.datetime,'' ) as replydatetime 
-		from  game,$table tb left join reply on  tb.id = reply.reviewid   ";
+		COALESCE(reply.datetime,'' ) as replydatetime ,member.picture as memberpicture,member.name as membername
+		from  game,$table tb left join reply on  tb.id = reply.reviewid left join member on tb.memberid=member.id   ";
 		$query_where = "where ".(($id=='')?"1":"gameId=$id and game.id=$id" );
 		  $query = $query_select.$query_where;
 

@@ -45,7 +45,7 @@ function searchSpecial($method,$count){
     
     $result = $sql->query("SELECT game.id,game.name,price,picture,description,tag.name as tag,
     COALESCE(sum(havelist.quantity),0)  as soldOutNumber ,
-    COALESCE(TRUNCATE(avg(review.star),1),0)  as star
+    COALESCE(TRUNCATE(avg(review.star),1),0)  as star,game.recommend
     FROM $table   
     JOIN tag ON game.tagId=tag.id 
     LEFT OUTER join havelist on havelist.gameid=game.id
@@ -98,7 +98,7 @@ function searchname($data){
     
     $result = $sql->query("SELECT game.id,game.name,price,picture,description,tag.name as tag,
     COALESCE(sum(havelist.quantity),0)  as soldOutNumber ,
-    COALESCE(TRUNCATE(avg(review.star),1),0)  as star
+    COALESCE(TRUNCATE(avg(review.star),1),0)  as star,game.recommend
     FROM $table   
     JOIN tag ON game.tagId=tag.id 
     LEFT OUTER join havelist on havelist.gameid=game.id

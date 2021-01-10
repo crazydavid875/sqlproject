@@ -52,9 +52,9 @@ function Select($reply_id){
     if($reply_id!=''){
         $where = "reply.id = ".$reply_id;
     }
-    
-    $result = $sql->query("SELECT reply.id,reviewId,reply.context,reply.datetime 
-    FROM $table JOIN review ON reply.reviewId=review.id WHERE $where ");
+
+    $result = $sql->query("SELECT reply.id,reviewid,reply.context,reply.datetime, member.name as managername ,member.picture as managerpicture
+    FROM reply left join member on  member.ismanager=1 JOIN review ON reply.reviewId=review.id   WHERE $where  ");
     
     if(!$result) {
         $response['value'] = $sql->error;

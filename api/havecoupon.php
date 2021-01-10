@@ -64,10 +64,10 @@
 		$response['code'] = null;
 		$response['value'] = '';
 		
-		$query_select = "select sum(game.price) from havelist  "
-		$query_join_shoppinglist = "left join shoppinglist on shoppinglist.id = $shoppinglistId  "
-		$query_join_game = "left join game on gameId = game.id"
-		$query_join_coupon = "left join coupon on coupon.id = $couponId"
+		$query_select = "select sum(game.price) from havelist  ";
+		$query_join_shoppinglist = "left join shoppinglist on shoppinglist.id = $shoppinglistId  ";
+		$query_join_game = "left join game on gameId = game.id";
+		$query_join_coupon = "left join coupon on coupon.id = $couponId";
 		$query = $query_select.$query_join_shoppinglist.$query_join_game.$query_join_coupon;
 
 		$result = $sql->query($query);
@@ -85,7 +85,7 @@
 		$now =  date("Y-m-d H:i:s");
 
 		$query_insert = "insert into $table ";
-		$query_keys = "(couponid, memberid, gettime)\n"
+		$query_keys = "(couponid, memberid, gettime)\n";
 		$query_values = "values($couponid, $memberid, $now)";
 		$query = $query_insert.$query_keys.$query_values;
 
