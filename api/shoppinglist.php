@@ -47,6 +47,17 @@ if($route->getParameter(2)=="cart"){
         
     }
 }
+if($route->getParameter(2)=="listid"){
+    if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
+        
+        $result = SelectGamesOnList($route->getParameter(3));            
+        
+        http_response_code($result['code']);
+
+        echo json_encode($result['value']);
+        
+    }
+}
 else {
     if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
         
@@ -359,6 +370,41 @@ function FinishList($data){
     if($sql->affected_rows==0){
         $response['code'] = 200;
         $response['value'] ="not thing change";
+    }
+    
+    return $response;
+}
+function SelectGamesOnList($listid){
+    global $sql;
+    global $table;
+    global $authmemberid;
+    
+    $response['code'] = 200;
+    $response['value'] = '';
+    $index = 0;
+    $where = "havelist.shoppingListId = $listid";
+    
+    $showData = "havelist.*,game.*,tag.name as tag";
+    $query = "SELECT  $showData
+    FROM havelist left join game on havelist.gameid = game.id 
+    left join tag on tag.id=game.tagid  WHERE $where   ";
+    
+    $result = $sql->query($query);
+    
+    if(!$result) {
+        $response['value'] = $sql->error;
+        $response['code']=400;
+        return $response;
+    }
+    $response['value'] = [];
+    while($row = $result->fetch_assoc()){
+        $response['value'][$index] = $row;
+        $index++;
+    }
+    
+    if($index == 0){
+        $response['code']=404;
+        $response['value'] = "list not found";
     }
     
     return $response;

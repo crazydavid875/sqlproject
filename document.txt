@@ -138,7 +138,7 @@ reply
         ./reply
         request:
         [{
-            "gameid":16,
+            "reviewid":16,
             "context":"aaa"
         }]
         response:
@@ -249,6 +249,36 @@ shoppinglist
                     "memberId": null
                 }
             ]
+        ./shoppinglist/listid/{shoppingListId}
+        response:
+        [
+            {
+                "id": "40",
+                "quantity": "2",
+                "shoppingListId": "13",
+                "gameId": "40",
+                "name": "DEATH STRANDING",
+                "price": "1790",
+                "picture": "https://steamcdn-a.akamaihd.net/steam/apps/1190460/header.jpg?t=1608719152",
+                "description": "From legendary game creator Hideo Kojima comes an all-new, genre-defying experience. Sam Bridges must brave a world utterly transformed by the Death Stranding. Carrying the disconnected remnants of our future in his hands, he embarks on a journey to reconnect the shattered world one step at a time.",
+                "tagId": "9",
+                "recommend": "0",
+                "tag": "abc"
+            },
+            {
+                "id": "1",
+                "quantity": "3",
+                "shoppingListId": "13",
+                "gameId": "1",
+                "name": "Gris",
+                "price": "300",
+                "picture": "https://cdn.cloudflare.steamstatic.com/steam/apps/683320/header.jpg?t=1574359986",
+                "description": "Gris是一個充滿希望的小姑娘，她由於生活中痛苦的經歷而迷失在自己的世界裡。",
+                "tagId": "1",
+                "recommend": "0",
+                "tag": "action"
+            }
+        ]
     - update
         ./shoppinglist/{id}
             [{
