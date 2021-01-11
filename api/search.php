@@ -42,7 +42,10 @@ function searchSpecial($method,$count){
     if($count!=''){
         $limt = "limit ".$count;
     }
-    
+    if($method=='newest'){
+        $order = "order by id desc";
+    }
+
     $result = $sql->query("SELECT game.id,game.name,price,picture,description,tag.name as tag,
     COALESCE(sum(havelist.quantity),0)  as soldOutNumber ,
     COALESCE(TRUNCATE(avg(review.star),1),0)  as star,game.recommend

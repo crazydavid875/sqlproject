@@ -50,7 +50,7 @@
 
 		$query_select = "select * from $table   ";
 		$query_where = "where ".(($id=='')?"1":"id=$id");
-		echo $query = $query_select.$query_where." order by datetime desc ";
+		$query = $query_select.$query_where." order by datetime desc ";
 
 		$result = $sql->query($query);
 		if(!$result) {
