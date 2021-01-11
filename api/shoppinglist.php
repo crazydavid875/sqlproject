@@ -242,7 +242,7 @@ function Select($id){
     }
     $showData = "*";
     $query = "SELECT  $showData
-    FROM shoppinglist  WHERE $where and memberid ='$authmemberid'  ";
+    FROM shoppinglist  WHERE $where and memberid ='$authmemberid' order by buydatetime desc ";
     
     $result = $sql->query($query);
     

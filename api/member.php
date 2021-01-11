@@ -146,7 +146,7 @@ function Update($data){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
     $str =  implode(",",$squence);
-    $query = "UPDATE $table SET $str where id=$authmemberid ";
+    echo $query = "UPDATE $table SET $str where id=$authmemberid ";
 
     $result = $sql->query($query);
     if(!$result) {
