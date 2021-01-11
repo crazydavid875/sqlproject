@@ -167,7 +167,7 @@ function InsertCart($data){
         
     }
     $query = "INSERT INTO havelist (shoppingListId,$keystr) 
-    SELECT (SELECT id from shoppinglist WHERE stateid = 0 ),$valstr FROM DUAL";
+    SELECT (SELECT id from shoppinglist WHERE stateid = 0 and memberid=$authmemberid ),$valstr FROM DUAL";
     
     $result = $sql->query($query);
     if(!$result) {
