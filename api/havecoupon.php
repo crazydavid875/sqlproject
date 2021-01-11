@@ -85,7 +85,7 @@
 		$now =  date("Y-m-d H:i:s");
 
 		$query_insert = "insert into $table ";
-		$query_keys = "(couponid, memberid, gettime)\n";
+		$query_keys = "(couponid, memberid, gettime) ";
 		$query_values = "values($couponid, $memberid, NOW())";
 		$query = $query_insert.$query_keys.$query_values;
 

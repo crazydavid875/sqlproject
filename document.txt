@@ -378,6 +378,8 @@ search
     ./search/recommend/{how many} ex:./search/recommend/5  (搜尋前5個)
     -search starest (get) 搜尋star最高
     ./search/starest/{how many} ex:./search/starest/5  (搜尋前5個，全部就不填)
+     -search newest (get) 搜尋最新
+    ./search/newest/{how many} ex:./search/newest/5  (搜尋前5個，全部就不填)
     -search(post)
     ./search
     request:
