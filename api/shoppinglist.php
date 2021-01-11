@@ -246,7 +246,7 @@ function Select($id){
     }
     $showData = "shoppinglist.*,coupon.*,
     round(COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0)) as 'total'";
-    echo $query = "SELECT  $showData
+    $query = "SELECT  $showData
     FROM shoppinglist 
     left join coupon on coupon.id = shoppinglist.couponid  
     left join havelist on havelist.shoppinglistid=shoppinglist.id
