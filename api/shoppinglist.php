@@ -378,9 +378,14 @@ function FinishList($data){
         $squence[$index]="shoppinglist.phone='".$data['phone']."'";
         $index++;
     }
-    $str =  implode(",",$squence).",";
-    $str.=" buydatetime='$now' , stateid='3'$coupon";
-    echo $query = "UPDATE $table SET $str where stateid=0 ";
+    if($index>0){
+        $str =  implode(",",$squence).",";
+    }
+    else{
+        $str = "";
+    }
+    $str.=" buydatetime='$now' , stateid='3' $coupon";
+    $query = "UPDATE $table SET $str where stateid=0 ";
 
     $result = $sql->query($query);
     if(!$result) {

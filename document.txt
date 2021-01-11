@@ -394,6 +394,36 @@ search
         "star": "0.0"
     }
     ]
+tag
+ select 
+    request
+    [{
+        id:1
+        name:"action"
+    },
+    {
+        id:2
+        name:"action"
+    }]
+ insert
+    require
+    [{
+        name:"bc"
+    }]
+    request
+    [{
+        id:3
+    }]
+ update /id
+    require
+    [{
+        name:"bc"
+    }]
+    request
+    [{
+        id:3
+    }]
+ delete /id
 
 todo:
     cupon shoppinglist 要存取使用了哪張優惠券
