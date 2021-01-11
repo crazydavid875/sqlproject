@@ -317,21 +317,22 @@ coupon
 	./coupon
 	response:
 		all coupon
-	./coupon/{id}
+	./coupon/{hash}
 	response:
 		target coupon
     -insert
 	./coupon
 	request:
 	    {
-		period:(time)
+		startdate:(date),
+        enddate:(date)
 		context:(varchar)
 		discount:(float)
 	    }
 	response:
 	    insert_id
     -delete
-	./coupon/{id}
+	./coupon/{hash}
 
 havecoupon
     -select
