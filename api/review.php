@@ -50,7 +50,7 @@
 
 		$query_select = "select * from $table   ";
 		$query_where = "where ".(($id=='')?"1":"id=$id");
-		$query = $query_select.$query_where." order by datetime desc";
+		echo $query = $query_select.$query_where." order by datetime desc ";
 
 		$result = $sql->query($query);
 		if(!$result) {
@@ -80,7 +80,7 @@
 		$query_select = "select tb.*,COALESCE(reply.id,'') as replyid,COALESCE(reply.context,'') as replycontext,
 		COALESCE(reply.datetime,'' ) as replydatetime ,member.picture as memberpicture,member.name as membername
 		from  game,$table tb left join reply on  tb.id = reply.reviewid left join member on tb.memberid=member.id   ";
-		$query_where = "where ".(($id=='')?"1":"gameId=$id and game.id=$id" );
+		$query_where = "where ".(($id=='')?"1":"gameId=$id and game.id=$id" )." order by datetime desc ";;
 		  $query = $query_select.$query_where;
 
 		$result = $sql->query($query);
