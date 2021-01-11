@@ -34,14 +34,20 @@
 	function Select($id) {
 		global $sql;
 		global $table;
-		
+		global $authmemberid;
+    	global $isManager;
 		$response['code'] = null;
 		$response['value'] = '';
 		$date = date("Y-m-d");
+		$time="";
+		if(!$isManager){
+			$time =" and CURRENT_DATE() between startdate and enddate ";
+		}
+		
 		$query_select = "select * from $table   ";
 		
-		$query_where = "where ".(($id=='')?" CURRENT_DATE() between startdate and enddate ":"hash='$id'");
-		$query = $query_select.$query_where;
+		$query_where = "where ".(($id=='')?" 1  ":"hash='$id'");
+		$query = $query_select.$query_where.$time;
 
 		$result = $sql->query($query);
 		if(!$result) {
@@ -58,7 +64,7 @@
 		
 		if($index == 0) {
 			$response['code'] = 404;
-			$response['value'] = "Review Not Found";
+			$response['value'] = "coupon Not Found";
 		}
 		else
 			$response['code'] = 200;

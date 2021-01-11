@@ -238,8 +238,7 @@ function Select($id){
     $response['code'] = 200;
     $response['value'] = '';
     $index = 0;
-    $where = 'stateid <>0';
-    $where = "havelist.shoppingListId = shoppinglist.id";
+    $where = "stateid <> 0 ";
     
     
     if($id!=''){
@@ -247,12 +246,13 @@ function Select($id){
     }
     $showData = "shoppinglist.*,coupon.*,
     round(COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0)) as 'total'";
-     $query = "SELECT  $showData
+    echo $query = "SELECT  $showData
     FROM shoppinglist 
     left join coupon on coupon.id = shoppinglist.couponid  
     left join havelist on havelist.shoppinglistid=shoppinglist.id
     left join game on havelist.gameid = game.id 
-    WHERE $where and memberid ='$authmemberid' 
+    WHERE $where  and
+    memberid ='$authmemberid' 
     group by shoppinglist.id
     order by shoppinglist.buydatetime desc ";
     
@@ -445,7 +445,7 @@ function GetCartTotal(){
     $showData = "round(COALESCE((sum(game.price*havelist.quantity)),0)) as 'total'";
     $query = "SELECT  $showData
     FROM havelist left join game on havelist.gameid = game.id 
-    WHERE $where   ";
+    WHERE $where ";
     
     $result = $sql->query($query);
     
