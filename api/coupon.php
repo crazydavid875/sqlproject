@@ -71,10 +71,15 @@
 		$response['code'] = null;
 		$response['value'] = '';
 		
+		do{
+			$random = substr(md5(mt_rand()), 0, 10);
+			$result = $sql->query("select * from coupon where hash='$random'");
+			
+		}while($result->num_rows>0);
 		$keys = array_keys($data);
 		$query_insert = "insert into $table ";
-		$query_keys = "(".implode(",",$keys).")\n";
-		$query_values = "values('".implode("','",$data)."')";
+		$query_keys = "(".implode(",",$keys).",`hash`)\n";
+		$query_values = "values('".implode("','",$data)."','$random')";
 		$query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);

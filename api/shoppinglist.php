@@ -5,8 +5,11 @@ $table = "shoppinglist";
 
 if($route->getParameter(2)=="cart"){
     if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
-        
-        $result = SelectCart($route->getParameter(3));
+        if($route->getParameter(3)=="total"){
+            $result = GetCartTotal();
+        }
+        else
+            $result = SelectCart($route->getParameter(3));
             
         
         http_response_code($result['code']);
@@ -236,13 +239,21 @@ function Select($id){
     $response['value'] = '';
     $index = 0;
     $where = 'stateid <>0';
+    $where = "havelist.shoppingListId = shoppinglist.id";
+    
     
     if($id!=''){
         $where = "$table.id = ".$id;
     }
-    $showData = "*";
-    $query = "SELECT  $showData
-    FROM shoppinglist  WHERE $where and memberid ='$authmemberid' order by buydatetime desc ";
+    $showData = "shoppinglist.*,coupon.*,COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0) as 'total'";
+     $query = "SELECT  $showData
+    FROM shoppinglist 
+    left join coupon on coupon.id = shoppinglist.couponid  
+    left join havelist on havelist.shoppinglistid=shoppinglist.id
+    left join game on havelist.gameid = game.id 
+    WHERE $where and memberid ='$authmemberid' 
+    group by shoppinglist.id
+    order by shoppinglist.buydatetime desc ";
     
     $result = $sql->query($query);
     
@@ -352,14 +363,23 @@ function FinishList($data){
     $now =  date("Y-m-d H:i:s");
     $squence = [];
     $str = "";
-    if(count($keys)>0){
-        for($i = 0;$i<count($keys);$i++){
-            $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
-        }
-        $str =  implode(",",$squence).",";
+    $coupon = "";
+    $index=0;
+    if(isset($data['coupon'])){
+        $coupon = ",couponid = COALESCE((SELECT id FROM coupon WHERE 
+        `hash`='".$data['coupon']."'),NULL)";
     }
-    $str.=" buydatetime='$now' , stateid='3'";
-    $query = "UPDATE $table SET $str where stateid=0 ";
+    if(isset($data['address'])) {
+        $squence[$index]="shoppinglist.address='".$data['address']."'";
+        $index++;
+    }
+    if(isset($data['phone'])) {
+        $squence[$index]="shoppinglist.phone='".$data['phone']."'";
+        $index++;
+    }
+    $str =  implode(",",$squence).",";
+    $str.=" buydatetime='$now' , stateid='3'$coupon";
+    echo $query = "UPDATE $table SET $str where stateid=0 ";
 
     $result = $sql->query($query);
     if(!$result) {
@@ -388,6 +408,43 @@ function SelectGamesOnList($listid){
     $query = "SELECT  $showData
     FROM havelist left join game on havelist.gameid = game.id 
     left join tag on tag.id=game.tagid  WHERE $where   ";
+    
+    $result = $sql->query($query);
+    
+    if(!$result) {
+        $response['value'] = $sql->error;
+        $response['code']=400;
+        return $response;
+    }
+    $response['value'] = [];
+    while($row = $result->fetch_assoc()){
+        $response['value'][$index] = $row;
+        $index++;
+    }
+    
+    if($index == 0){
+        $response['code']=404;
+        $response['value'] = "list not found";
+    }
+    
+    return $response;
+}
+function GetCartTotal(){
+    global $sql;
+    global $table;
+    global $authmemberid;
+    
+    $response['code'] = 200;
+    $response['value'] = '';
+    $index = 0;
+    $where = "havelist.shoppingListId = 
+    COALESCE((select id from shoppinglist where stateid=0 and 
+    memberid='$authmemberid'),-1)";
+    
+    $showData = "COALESCE((sum(game.price*havelist.quantity)),0) as 'total'";
+    $query = "SELECT  $showData
+    FROM havelist left join game on havelist.gameid = game.id 
+    WHERE $where   ";
     
     $result = $sql->query($query);
     

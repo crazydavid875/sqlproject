@@ -202,7 +202,7 @@ shoppinfliststate
 shoppinglist/cart
 - select
         ./shoppinglist/cart
-        
+        ./shoppinglist/cart/total
         ./shoppinglist/cart/{id}
         response: 
             [
@@ -242,11 +242,19 @@ shoppinglist
         response: 
             [
                 {
-                    "id": "3",
-                    "stateId": "0",
-                    "address": null,
-                    "buyDatetime": "2021-01-04 08:38:12",
-                    "memberId": null
+                    "id": "17",
+                    "stateId": "3",
+                    "address": "wdabed",
+                    "buyDatetime": "2021-01-11 08:04:55",
+                    "memberId": "29",
+                    "couponid": "17",
+                    "phone": "091223",
+                    "hash": "www",
+                    "context": "abed",
+                    "discount": "0.7",
+                    "startdate": "2020-01-06",
+                    "enddate": "2020-01-07",
+                    "total": "2498.9999574422836"
                 }
             ]
         ./shoppinglist/listid/{shoppingListId}
