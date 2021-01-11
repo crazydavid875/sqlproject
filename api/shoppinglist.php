@@ -47,7 +47,7 @@ if($route->getParameter(2)=="cart"){
         
     }
 }
-if($route->getParameter(2)=="listid"){
+else if($route->getParameter(2)=="listid"){
     if($_SERVER['REQUEST_METHOD'] === 'GET'){//GET(SELECT),POST(INSERT),DELETE(DELETE),PATCH(UPDATE)
         
         $result = SelectGamesOnList($route->getParameter(3));            
