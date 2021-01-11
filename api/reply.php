@@ -86,7 +86,7 @@ function Insert($data){
     $keys = array_keys($data);
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
-    $query = "INSERT INTO $table ($keystr,datetime) VALUES($valstr,'$now')";
+    $query = "INSERT INTO $table ($keystr,datetime) VALUES($valstr,NOW())";
     
     $result = $sql->query($query);
     if(!$result) {

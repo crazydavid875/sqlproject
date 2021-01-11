@@ -86,7 +86,7 @@
 
 		$query_insert = "insert into $table ";
 		$query_keys = "(couponid, memberid, gettime)\n";
-		$query_values = "values($couponid, $memberid, $now)";
+		$query_values = "values($couponid, $memberid, NOW())";
 		$query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);

@@ -160,7 +160,7 @@ function InsertCart($data){
     $valstr =  sprintf("'%s'",implode("','",$data));   
     $result = $sql->query("SELECT * FROM shoppinglist where stateid = 0 and memberid = '$authmemberid'");
     if($result->num_rows<=0){
-        echo $query = "INSERT INTO shoppinglist (stateid,buyDatetime,memberid) VALUES(0,'$now','$authmemberid')";
+        echo $query = "INSERT INTO shoppinglist (stateid,buyDatetime,memberid) VALUES(0,NOW(),'$authmemberid')";
         $result = $sql->query($query);
         if(!$result) {
             $response['value'] = $sql->error;
@@ -293,7 +293,7 @@ function Insert($data){
     $now =  date("Y-m-d H:i:s");
     if(isset($data['stateid'])&&$data['stateid']==1){
         $keystr.= ",buyDatetime";
-        $valstr.= "'$now'";
+        $valstr.= "NOW()";
     }
     $query = "INSERT INTO $table ($keystr,memberid) VALUES($valstr,'$authmemberid')";
     
@@ -320,7 +320,7 @@ function Update($data,$id){
     }
     $str =  implode(",",$squence);
     if(isset($data['stateid'])&&$data['stateid']==1){
-        $str.="datetime='$now'";
+        $str.="datetime=NOW()";
     }
     $query = "UPDATE $table SET $str where id=$id ";
 
@@ -364,7 +364,7 @@ function FinishList($data){
     $response['code'] = 200;
     $response['value'] = '';
     $keys = array_keys($data);
-    $now =  date("Y-m-d H:i:s");
+    $now =  date("Y-m-d H:I:S");
     $squence = [];
     $str = "";
     $coupon = "";
@@ -387,7 +387,7 @@ function FinishList($data){
     else{
         $str = "";
     }
-    $str.=" buydatetime='$now' , stateid='3' $coupon";
+    $str.=" buydatetime=NOW() , stateid='3' $coupon";
     $query = "UPDATE $table SET $str where stateid=0 ";
 
     $result = $sql->query($query);

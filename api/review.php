@@ -127,7 +127,7 @@
 
 		$query_insert = "insert into $table ";
 		$query_keys = "(".implode(",",$keys).",datetime,memberid)\n";
-		$query_values = "values(".sprintf("'%s'",implode("','",$data)).",'$now','$authmemberid')";
+		$query_values = "values(".sprintf("'%s'",implode("','",$data)).",NOW(),'$authmemberid')";
 		$query = $query_insert.$query_keys.$query_values;
 
 		$result = $sql->query($query);

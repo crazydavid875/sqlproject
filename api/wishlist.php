@@ -94,7 +94,7 @@ function Insert($data){
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
     $now =  date("Y-m-d H:i:s");
- $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,'$now','$authmemberid')";
+ $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,NOW(),'$authmemberid')";
     
     $result = $sql->query($query);
     if(!$result) {
@@ -116,7 +116,7 @@ function Update($data,$id){
     for($i = 0;$i<count($keys);$i++){
         $squence[$i] = sprintf("`%s`='%s'",$keys[$i],$data[$keys[$i]]);
     }
-    $str =  implode(",",$squence).",datetime='$now'";
+    $str =  implode(",",$squence).",datetime=NOW()";
     $query = "UPDATE $table SET $str where id=$id ";
 
     $result = $sql->query($query);
