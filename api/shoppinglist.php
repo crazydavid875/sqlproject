@@ -245,7 +245,8 @@ function Select($id){
     if($id!=''){
         $where = "$table.id = ".$id;
     }
-    $showData = "shoppinglist.*,coupon.*,COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0) as 'total'";
+    $showData = "shoppinglist.*,coupon.*,
+    round(COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0)) as 'total'";
      $query = "SELECT  $showData
     FROM shoppinglist 
     left join coupon on coupon.id = shoppinglist.couponid  
@@ -441,7 +442,7 @@ function GetCartTotal(){
     COALESCE((select id from shoppinglist where stateid=0 and 
     memberid='$authmemberid'),-1)";
     
-    $showData = "COALESCE((sum(game.price*havelist.quantity)),0) as 'total'";
+    $showData = "round(COALESCE((sum(game.price*havelist.quantity)),0)) as 'total'";
     $query = "SELECT  $showData
     FROM havelist left join game on havelist.gameid = game.id 
     WHERE $where   ";

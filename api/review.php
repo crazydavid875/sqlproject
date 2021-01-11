@@ -81,7 +81,7 @@
 		COALESCE(reply.datetime,'' ) as replydatetime ,member.picture as memberpicture,member.name as membername
 		from  game,$table tb left join reply on  tb.id = reply.reviewid left join member on tb.memberid=member.id   ";
 		$query_where = "where ".(($id=='')?"1":"gameId=$id and game.id=$id" )." order by datetime desc ";;
-		  $query = $query_select.$query_where;
+		$query = $query_select.$query_where;
 
 		$result = $sql->query($query);
 		if(!$result) {
