@@ -242,11 +242,26 @@ shoppinglist
         response: 
             [
                 {
-                    "id": "17",
-                    "stateId": "3",
+                    "id": "20",
+                    "stateid": "3",
+                    "address": "abd",
+                    "buyDatetime": "2021-01-11 12:03:42",
+                    "memberid": "29",
+                    "couponid": null,
+                    "phone": "32429",
+                    "hash": null,
+                    "context": null,
+                    "discount": null,
+                    "startdate": null,
+                    "enddate": null,
+                    "total": "0"
+                },
+                {
+                    "id": "19",
+                    "stateid": "3",
                     "address": "wdabed",
                     "buyDatetime": "2021-01-11 08:04:55",
-                    "memberId": "29",
+                    "memberid": "29",
                     "couponid": "17",
                     "phone": "091223",
                     "hash": "www",
@@ -254,7 +269,7 @@ shoppinglist
                     "discount": "0.7",
                     "startdate": "2020-01-06",
                     "enddate": "2020-01-07",
-                    "total": "2498.9999574422836"
+                    "total": "2499"
                 }
             ]
         ./shoppinglist/listid/{shoppingListId}

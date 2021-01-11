@@ -244,7 +244,10 @@ function Select($id){
     if($id!=''){
         $where = "$table.id = ".$id;
     }
-    $showData = "shoppinglist.*,coupon.*,
+     $showData = "shoppinglist.id,shoppinglist.stateid,shoppinglist.address,
+    shoppinglist.buyDatetime,shoppinglist.memberid,shoppinglist.couponid,
+    shoppinglist.phone,coupon.hash,coupon.context,coupon.discount,coupon.startdate
+    ,coupon.enddate,
     round(COALESCE((sum(game.price*havelist.quantity)*coupon.discount),0)) as 'total'";
     $query = "SELECT  $showData
     FROM shoppinglist 
