@@ -48,7 +48,10 @@ switch($route->getParameter(1)){
 		break;
 	case "havecoupon":
 		include('api/havecoupon.php');
-		break;
+        break;
+    case "soldout":
+        include('api/soldout.php');
+        break;
     default:
         include('api/default.php'); 
         break;
