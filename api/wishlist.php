@@ -94,7 +94,16 @@ function Insert($data){
     $keystr =  sprintf("`%s`\n",implode("`,`",$keys));
     $valstr =  sprintf("'%s'",implode("','",$data));        
     $now =  date("Y-m-d H:i:s");
- $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,NOW(),'$authmemberid')";
+    $gameid = -1;
+    if(isset($data["gameid"])){
+        $gameid = $data["gameid"];
+    }
+    $result = $sql->query("select * from $table where memberid='$authmemberid' and gameid='$gameid'");
+    if($result->num_rows>0){
+        $query = "delete from $table where memberid='$authmemberid' and gameid='$gameid'";
+    }
+    else
+        $query = "INSERT INTO $table ($keystr,saveDatetime,memberid) VALUES($valstr,NOW(),'$authmemberid')";
     
     $result = $sql->query($query);
     if(!$result) {
